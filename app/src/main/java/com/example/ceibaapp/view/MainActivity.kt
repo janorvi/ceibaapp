@@ -1,7 +1,8 @@
-package com.example.ceibaapp
+package com.example.ceibaapp.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.ceibaapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
