@@ -5,7 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.example.ceibaapp.R
+import com.example.ceibaapp.model.User
+import com.example.ceibaapp.viewmodel.UserFragmentViewModel
+import com.example.ceibaapp.viewmodel.UserFragmentViewModelFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +27,9 @@ class UsersFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var userViewModel: UserFragmentViewModel? = null
+    private var userList: List<User>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,7 +43,32 @@ class UsersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_users, container, false)
+        var rootView = inflater.inflate(R.layout.fragment_users, container, false)
+        var userFragmentViewModelFactory: UserFragmentViewModelFactory? = activity?.let {
+            UserFragmentViewModelFactory.createFactory(it)
+        }
+        userViewModel = ViewModelProviders.of(this,userFragmentViewModelFactory).get(UserFragmentViewModel::class.java)
+        userViewModel?.getAllUsersFromDatabase()
+        userViewModel?.userList?.observe(viewLifecycleOwner) {
+            if(it.isEmpty()){
+                MainActivity.sourceType = "Service"
+                userViewModel?.getAllUsersFromService()
+            }else {
+                when(MainActivity.sourceType){
+                    "Service" -> {
+                        for(user in it){
+                            userViewModel?.insert(user)
+                        }
+                        MainActivity.sourceType = "Database"
+                        userViewModel?.getAllUsersFromDatabase()
+                    }
+                    "Database" -> {
+                        userList = it
+                    }
+                }
+            }
+        }
+        return rootView
     }
 
     companion object {
