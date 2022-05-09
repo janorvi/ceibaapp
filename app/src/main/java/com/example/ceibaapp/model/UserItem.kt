@@ -10,10 +10,12 @@ class UserItem(
 ): Item<GroupieViewHolder>() {
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        val textViewAmount: TextView = viewHolder.itemView.findViewById(R.id.text_view_moto_transaccion)
-        val textViewStatus: TextView = viewHolder.itemView.findViewById(R.id.text_view_referencia_transaccion)
-        textViewAmount.text = user.name
-        textViewStatus.text = user.email
+        val textViewName: TextView = viewHolder.itemView.findViewById(R.id.name_text_view)
+        val textViewPhone: TextView = viewHolder.itemView.findViewById(R.id.phone_text_view)
+        val textViewEmail: TextView = viewHolder.itemView.findViewById(R.id.email_text_view)
+        textViewName.text = user.name
+        textViewPhone.text = user.phone
+        textViewEmail.text = user.email
     }
 
     override fun getLayout() = R.layout.user_item
