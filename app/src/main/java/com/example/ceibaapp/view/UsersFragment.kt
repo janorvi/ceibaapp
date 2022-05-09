@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -99,6 +100,17 @@ class UsersFragment : Fragment() {
                     }
                 }
             }
+        }
+        groupAdapter.setOnItemClickListener { item, view ->
+            var userItem: UserItem = item as UserItem
+
+            activity?.supportFragmentManager?.beginTransaction()?.replace(
+                R.id.frame_layout,
+                PostsFragment.newInstance(
+                    userItem.user.id.toString(),
+                    userItem.user.name
+                )
+            )?.addToBackStack(null)?.commit()
         }
         return rootView
     }

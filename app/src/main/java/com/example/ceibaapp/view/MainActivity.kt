@@ -12,6 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
 
     private val usersFragment = UsersFragment()
+    private val postsFragment = PostsFragment.newInstance("","")
     private var bottomNavigationView: BottomNavigationView? = null
 
     companion object{
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView?.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.users_item -> replaceFragment(usersFragment)
+                R.id.posts_item -> replaceFragment(postsFragment)
             }
             true
         }
