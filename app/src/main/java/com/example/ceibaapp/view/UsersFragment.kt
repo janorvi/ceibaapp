@@ -7,10 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.ceibaapp.R
 import com.example.ceibaapp.model.User
+import com.example.ceibaapp.model.UserItem
 import com.example.ceibaapp.viewmodel.UserFragmentViewModel
 import com.example.ceibaapp.viewmodel.UserFragmentViewModelFactory
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,6 +52,11 @@ class UsersFragment : Fragment() {
         var userFragmentViewModelFactory: UserFragmentViewModelFactory? = activity?.let {
             UserFragmentViewModelFactory.createFactory(it)
         }
+        var groupAdapter = GroupAdapter<GroupieViewHolder>()
+
+        var recyclerView: RecyclerView? = null
+        recyclerView = rootView.findViewById(R.id.users_recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         userViewModel = ViewModelProviders.of(this,userFragmentViewModelFactory).get(UserFragmentViewModel::class.java)
         userViewModel?.getAllUsersFromDatabase()
         userViewModel?.userList?.observe(viewLifecycleOwner) {
@@ -63,7 +73,10 @@ class UsersFragment : Fragment() {
                         userViewModel?.getAllUsersFromDatabase()
                     }
                     "Database" -> {
-                        userList = it
+                        for(user in it){
+                            groupAdapter.add(UserItem(user))
+                        }
+                        recyclerView.adapter = groupAdapter
                     }
                 }
             }

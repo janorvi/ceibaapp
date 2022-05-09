@@ -8,13 +8,7 @@ import com.example.ceibaapp.model.User
 interface UserDAO {
 
     @Insert
-    fun insert(user: User)
-
-    @Update
-    fun update(user: User)
-
-    @Delete
-    fun delete(user: User)
+    suspend fun insert(user: User)
 
     @Query("SELECT * FROM users_table")
     suspend fun getAllUsers(): List<User>

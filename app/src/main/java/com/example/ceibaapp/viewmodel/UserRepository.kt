@@ -29,7 +29,7 @@ class UserRepository(
         }
     }
 
-    fun insert(user: User) = userDAO?.insert(user)
+    suspend fun insert(user: User) = userDAO?.insert(user)
 
     suspend fun getAllUsersFromDatabase() = userDAO?.getAllUsers()
 
