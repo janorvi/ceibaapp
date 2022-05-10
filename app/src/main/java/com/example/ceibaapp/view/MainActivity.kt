@@ -12,7 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
 
     private val usersFragment = UsersFragment()
-    private val postsFragment = PostsFragment.newInstance("","")
+    private val postsFragment = PostsFragment.newInstance("0","empty")
     private var bottomNavigationView: BottomNavigationView? = null
 
     companion object{
@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
+        replaceFragment(usersFragment)
     }
 
     private fun replaceFragment(fragment: Fragment){

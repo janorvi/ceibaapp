@@ -79,12 +79,15 @@ class PostsFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL,false)
         postViewModel = ViewModelProviders.of(this,postFragmentViewModelFactory).get(
             PostFragmentViewModel::class.java)
-        if(name.isNullOrEmpty()){
-            titleTextView?.text = "Todas las publicaciones"
-            postViewModel?.getAllPostsFromService()
-        }else{
-            titleTextView?.text = "Publicaciones de " + name
-            postViewModel?.getAllPostsByUserIdFromService(userId)
+        when(name){
+            "empty" -> {
+                titleTextView?.text = "Todas las publicaciones"
+                postViewModel?.getAllPostsFromService()
+            }
+            else -> {
+                titleTextView?.text = "Publicaciones de " + name
+                postViewModel?.getAllPostsByUserIdFromService(userId)
+            }
         }
         postViewModel?.postList?.observe(viewLifecycleOwner) {
             if(!it.isEmpty()){
